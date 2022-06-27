@@ -1,0 +1,17 @@
+{
+  "name": "actions-web-test-run",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "bash ./test.bash"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/autifyhq/actions-web-test-run.git"
+  },
+  "author": "Autify",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/autifyhq/actions-web-test-run/issues"
+  },
+  "homepage": "https://github.com/autifyhq/actions-web-test-run#readme"
+}

@@ -1,0 +1,42 @@
+name: 'test'
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  unit-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm run test
+
+  integration-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: autifyhq/actions-setup-cli@v1
+      - uses: actions/setup-node@v3
+      - run: npm install @autifyhq/autify-cli-integration-test
+      - uses: ./
+        with:
+          access-token: token
+          autify-path: ./node_modules/.bin/autify-with-proxy
+          autify-test-url: https://app.autify.com/projects/743/scenarios/91437
+      - uses: ./
+        with:
+          access-token: token
+          autify-path: ./node_modules/.bin/autify-with-proxy
+          autify-test-url: https://app.autify.com/projects/743/scenarios/91437
+          wait: true

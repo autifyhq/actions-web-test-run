@@ -1,0 +1,59 @@
+name: 'Run test on Autify for Web'
+description: 'Run a test scenario or test plan on Autify for Web.'
+author: 'Autify Inc.'
+inputs:
+  access-token:
+    required: true
+    description: 'Access token of Autify for Web.'
+  autify-test-url:
+    required: true
+    description: 'URL of a test scenario or test plan e.g. https://app.autify.com/projects/<ID>/(scenarios|test_plans)/<ID>'
+  wait:
+    required: false
+    default: 'false'
+    description: 'When true, the action waits until the test finishes.'
+  timeout:
+    required: false
+    description: 'Timeout seconds when waiting.'
+  url-replacements:
+    required: false
+    description: 'URL replacements e.g. http://example.com=http://example.net,http://example.org=http://example.net'
+  browser:
+    required: false
+    description: 'Browser for running the test scenario (not supported by test plan executions)'
+  device:
+    required: false
+    description: 'Device for running the test scenario (not supported by test plan executions)'
+  device-type:
+    required: false
+    description: 'Device type for running the test scenario (not supported by test plan executions)'
+  os:
+    required: false
+    description: 'OS for running the test scenario (not supported by test plan executions)'
+  os-version:
+    required: false
+    description: 'OS version for running the test scenario (not supported by test plan executions)'
+  autify-path:
+    required: false
+    default: 'autify'
+    description: 'A path to `autify`. If set, this action will not install autify-cli.'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: autifyhq/actions-setup-cli@v1
+      if: ${{ inputs.autify-path == 'autify' }}
+    - run: $GITHUB_ACTION_PATH/script.bash
+      shell: bash
+      env:
+        INPUT_ACCESS_TOKEN: ${{ inputs.access-token }}
+        INPUT_AUTIFY_TEST_URL: ${{ inputs.autify-test-url }}
+        INPUT_WAIT: ${{ inputs.wait }}
+        INPUT_TIMEOUT: ${{ inputs.timeout }}
+        INPUT_URL_REPLACEMENTS: ${{ inputs.url-replacements }}
+        INPUT_BROWSER: ${{ inputs.browser }}
+        INPUT_DEVICE: ${{ inputs.device }}
+        INPUT_DEVICE_TYPE: ${{ inputs.device-type }}
+        INPUT_OS: ${{ inputs.os }}
+        INPUT_OS_VERSION: ${{ inputs.os-version }}
+        INPUT_AUTIFY_PATH: ${{ inputs.autify-path }}
