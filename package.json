@@ -1,6 +1,6 @@
 {
   "name": "actions-web-test-run",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "test": "bash ./test.bash"
   },
