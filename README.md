@@ -51,6 +51,9 @@ This will keep running the action until the test finishes or times out.
   url-replacements:
     required: false
     description: 'URL replacements e.g. http://example.com=http://example.net,http://example.org=http://example.net'
+  test-execution-name:
+    required: false
+    description: 'Name of the test execution (not supported by test plan executions)'
   browser:
     required: false
     description: 'Browser for running the test scenario (not supported by test plan executions)'
