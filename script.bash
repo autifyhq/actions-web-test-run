@@ -28,6 +28,10 @@ if ! [ -z "${INPUT_URL_REPLACEMENTS}" ]; then
   done
 fi
 
+if ! [ -z "${INPUT_TEST_EXECUTION_NAME}" ]; then
+  add_args "--name=${INPUT_TEST_EXECUTION_NAME}"
+fi
+
 if ! [ -z "${INPUT_BROWSER}" ]; then
   add_args "--browser=${INPUT_BROWSER}"
 fi
