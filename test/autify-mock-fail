@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo autify-fail "$@"
+cat $(dirname $0)/log
+exit 1

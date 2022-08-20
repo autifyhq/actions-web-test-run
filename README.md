@@ -74,3 +74,13 @@ This will keep running the action until the test finishes or times out.
     default: 'autify'
     description: 'A path to `autify`. If set, this action will not install autify-cli.'
 ```
+
+## Outputs
+```yaml
+  exit-code:
+    description: 'Exit code of autify-cli. 0 means succeeded.'
+  log:
+    description: 'Log of stdout and stderr.'
+  result-url:
+    description: 'Test result URL on Autify for Web'
+```

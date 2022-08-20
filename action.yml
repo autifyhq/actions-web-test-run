@@ -41,12 +41,24 @@ inputs:
     default: 'autify'
     description: 'A path to `autify`. If set, this action will not install autify-cli.'
 
+outputs:
+  exit-code:
+    description: 'Exit code of autify-cli. 0 means succeeded.'
+    value: ${{ steps.run.outputs.exit-code }}
+  log:
+    description: 'Log of stdout and stderr.'
+    value: ${{ steps.run.outputs.log }}
+  result-url:
+    description: 'Test result URL on Autify for Web'
+    value: ${{ steps.run.outputs.result-url }}
+
 runs:
   using: 'composite'
   steps:
     - uses: autifyhq/actions-setup-cli@v1
       if: ${{ inputs.autify-path == 'autify' }}
-    - run: $GITHUB_ACTION_PATH/script.bash
+    - id: run
+      run: $GITHUB_ACTION_PATH/script.bash
       shell: bash
       env:
         INPUT_ACCESS_TOKEN: ${{ inputs.access-token }}
