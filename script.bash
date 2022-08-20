@@ -52,4 +52,22 @@ if ! [ -z "${INPUT_OS_VERSION}" ]; then
   add_args "--os-version=${INPUT_OS_VERSION}"
 fi
 
-AUTIFY_WEB_ACCESS_TOKEN=${INPUT_ACCESS_TOKEN} ${AUTIFY} web test run ${ARGS}
+OUTPUT=$(mktemp)
+
+AUTIFY_WEB_ACCESS_TOKEN=${INPUT_ACCESS_TOKEN} ${AUTIFY} web test run ${ARGS} 2>&1 | tee $OUTPUT
+exit_code=${PIPESTATUS[0]}
+echo ::set-output name=exit-code::$exit_code
+
+# Workaround to return multiline string as outputs
+# https://trstringer.com/github-actions-multiline-strings/
+output=$(cat $OUTPUT)
+output="${output//'%'/%25}"
+output="${output//$'\n'/%0A}"
+output="${output//$'\r'/%0D}"
+echo ::set-output name=log::$output
+
+# https://stackoverflow.com/a/16502803/2052892
+result=$(grep "Successfully started" $OUTPUT | grep -Eo 'https://[^ >]+' | head -1)
+echo ::set-output name=result-url::$result
+
+exit $exit_code

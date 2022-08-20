@@ -29,14 +29,39 @@ jobs:
       - uses: autifyhq/actions-setup-cli@v1
       - uses: actions/setup-node@v3
       - run: npm install @autifyhq/autify-cli-integration-test
-      - uses: ./
+
+      - id: web-test-run
+        uses: ./
         with:
           access-token: token
           autify-path: ./node_modules/.bin/autify-with-proxy
           autify-test-url: https://app.autify.com/projects/743/scenarios/91437
-      - uses: ./
+        env:
+          AUTIFY_TEST_WAIT_INTERVAL_SECOND: 0
+      - run: test ${{ steps.web-test-run.outputs.exit-code }} = 0
+      - run: echo "${{ steps.web-test-run.outputs.log }}" | grep "Successfully started"
+      - run: echo ${{ steps.web-test-run.outputs.result-url }} | grep https://app.autify.com/projects/743/results/
+
+      - id: web-test-run-wait
+        uses: ./
         with:
           access-token: token
           autify-path: ./node_modules/.bin/autify-with-proxy
           autify-test-url: https://app.autify.com/projects/743/scenarios/91437
           wait: true
+        env:
+          AUTIFY_TEST_WAIT_INTERVAL_SECOND: 0
+      - run: test ${{ steps.web-test-run-wait.outputs.exit-code }} = 0
+      - run: echo "${{ steps.web-test-run-wait.outputs.log }}" | grep "Test passed!"
+      - run: echo ${{ steps.web-test-run.outputs.result-url }} | grep https://app.autify.com/projects/743/results/
+
+      - id: failed
+        uses: ./
+        with:
+          access-token: token
+          autify-path: 'false'
+          autify-test-url: https://app.autify.com/projects/743/scenarios/91437
+        continue-on-error: true
+      - run: test ${{ steps.failed.outputs.exit-code }} = 1
+      - run: test -z "${{ steps.failed.outputs.log }}"
+      - run: test -z "${{ steps.failed.outputs.result-url }}"
