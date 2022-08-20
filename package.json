@@ -2,6 +2,7 @@
   "name": "actions-web-test-run",
   "version": "1.1.0",
   "scripts": {
+    "lint": "shellcheck *.bash test/*.bash test/autify-mock*",
     "test": "bash ./test/test.bash"
   },
   "repository": {

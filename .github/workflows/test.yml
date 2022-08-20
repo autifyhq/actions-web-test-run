@@ -7,6 +7,13 @@ on:
       - 'releases/*'
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm run lint
+
   unit-test:
     strategy:
       matrix:
@@ -26,8 +33,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - uses: autifyhq/actions-setup-cli@v1
       - uses: actions/setup-node@v3
+      - uses: autifyhq/actions-setup-cli@v1 # This is needed because we override `autify-path`.
       - run: npm install @autifyhq/autify-cli-integration-test
 
       - id: web-test-run
