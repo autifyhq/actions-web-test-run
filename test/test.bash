@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-log_file=$(dirname $0)/log
+log_file=$(dirname "$0")/log
 
 function before() {
   unset INPUT_AUTIFY_PATH
@@ -20,7 +20,8 @@ function before() {
 
 function test_command() {
   local expected=$1
-  local result=$(./script.bash | head -1)
+  local result
+  result=$(./script.bash | head -1)
 
   if [ "$result" == "$expected" ]; then
     echo "Passed command: $expected"
@@ -34,8 +35,7 @@ function test_command() {
 
 function test_code() {
   local expected=$1
-  local null
-  null=$(./script.bash)
+  ./script.bash > /dev/null
   local result=$?
 
   if [ "$result" == "$expected" ]; then
@@ -49,34 +49,38 @@ function test_code() {
 }
 
 function test_log() {
-  local result=$(mktemp)
-  local null=$(./script.bash | tail -n+2 | egrep -v ^::set-output > $result)
+  local result
+  result=$(mktemp)
+  ./script.bash | tail -n+2 | grep -E -v ^::set-output > "$result"
 
-  if (git diff --no-index --quiet -- $log_file $result); then
+  if (git diff --no-index --quiet -- "$log_file" "$result"); then
     echo "Passed log:"
   else
     echo "Failed log:"
-    git --no-pager diff --no-index -- $log_file $result
+    git --no-pager diff --no-index -- "$log_file" "$result"
     exit 1
   fi
 }
 
 function test_output() {
   local name=$1
-  local expected=$(mktemp)
-  echo -e "$2" > $expected
-  local output=$(./script.bash | egrep ^::set-output | grep name=${name}:: | awk -F'::' '{print $3}')
+  local expected
+  expected=$(mktemp)
+  echo -e "$2" > "$expected"
+  local output
+  output=$(./script.bash | grep -E ^::set-output | grep name="${name}":: | awk -F'::' '{print $3}')
   output="${output//'%25'/%}"
   output="${output//'%0A'/$'\n'}"
   output="${output//'%0D'/$'\r'}"
-  local result=$(mktemp)
-  echo -e "$output" > $result
+  local result
+  result=$(mktemp)
+  echo -e "$output" > "$result"
 
-  if (git diff --no-index --quiet -- $expected $result); then
+  if (git diff --no-index --quiet -- "$expected" "$result"); then
     echo "Passed output: $name"
   else
     echo "Failed output: $name"
-    git --no-pager diff --no-index -- $expected $result
+    git --no-pager diff --no-index -- "$expected" "$result"
     exit 1
   fi
 }
@@ -90,7 +94,7 @@ function test_output() {
   test_code 0
   test_log
   test_output exit-code "0"
-  test_output log "autify web test run a\n$(cat $log_file)"
+  test_output log "autify web test run a\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
 
@@ -112,7 +116,7 @@ function test_output() {
   test_code 0
   test_log
   test_output exit-code "0"
-  test_output log "autify web test run a --wait -t=300 -r=a -r=b --name=a --browser=a --device=a --device-type=a --os=a --os-version=a\n$(cat $log_file)"
+  test_output log "autify web test run a --wait -t=300 -r=a -r=b --name=a --browser=a --device=a --device-type=a --os=a --os-version=a\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
 
@@ -125,6 +129,6 @@ function test_output() {
   test_code 1
   test_log
   test_output exit-code "1"
-  test_output log "autify-fail web test run a\n$(cat $log_file)"
+  test_output log "autify-fail web test run a\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
