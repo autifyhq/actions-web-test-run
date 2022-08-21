@@ -77,8 +77,7 @@ output="${output//$'\n'/%0A}"
 output="${output//$'\r'/%0D}"
 echo ::set-output name=log::"$output"
 
-# https://stackoverflow.com/a/16502803/2052892
-result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ >]+' | head -1)
+result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | head -1)
 echo ::set-output name=result-url::"$result"
 
 exit_script "$exit_code"
