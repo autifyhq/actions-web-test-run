@@ -69,6 +69,9 @@ This will keep running the action until the test finishes or times out.
   os-version:
     required: false
     description: 'OS version for running the test scenario (not supported by test plan executions)'
+  autify-connect-key:
+    required: false
+    description: 'Name of the Autify Connect Key (not supported by test plan executions)'
   autify-path:
     required: false
     default: 'autify'
