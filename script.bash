@@ -65,6 +65,10 @@ if [ -n "${INPUT_OS_VERSION}" ]; then
   add_args "--os-version=${INPUT_OS_VERSION}"
 fi
 
+if [ -n "${INPUT_AUTIFY_CONNECT_KEY}" ]; then
+  add_args "--autify-connect-key=${INPUT_AUTIFY_CONNECT_KEY}"
+fi
+
 OUTPUT=$(mktemp)
 AUTIFY_WEB_ACCESS_TOKEN=${INPUT_ACCESS_TOKEN} ${AUTIFY} web test run "${ARGS[@]}" 2>&1 | tee "$OUTPUT"
 exit_code=${PIPESTATUS[0]}

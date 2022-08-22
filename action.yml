@@ -36,6 +36,9 @@ inputs:
   os-version:
     required: false
     description: 'OS version for running the test scenario (not supported by test plan executions)'
+  autify-connect-key:
+    required: false
+    description: 'Name of the Autify Connect Key (not supported by test plan executions)'
   autify-path:
     required: false
     default: 'autify'
@@ -72,4 +75,5 @@ runs:
         INPUT_DEVICE_TYPE: ${{ inputs.device-type }}
         INPUT_OS: ${{ inputs.os }}
         INPUT_OS_VERSION: ${{ inputs.os-version }}
+        INPUT_AUTIFY_CONNECT_KEY: ${{ inputs.autify-connect-key }}
         INPUT_AUTIFY_PATH: ${{ inputs.autify-path }}
