@@ -65,8 +65,8 @@ if [ -n "${INPUT_OS_VERSION}" ]; then
   add_args "--os-version=${INPUT_OS_VERSION}"
 fi
 
-if [ -n "${INPUT_AUTIFY_CONNECT_KEY}" ]; then
-  add_args "--autify-connect-key=${INPUT_AUTIFY_CONNECT_KEY}"
+if [ -n "${INPUT_AUTIFY_CONNECT}" ]; then
+  add_args "--autify-connect=${INPUT_AUTIFY_CONNECT}"
 fi
 
 OUTPUT=$(mktemp)
