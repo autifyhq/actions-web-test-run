@@ -5,7 +5,7 @@
 # Run test on Autify for Web
 Run a test scenario or test plan on Autify for Web.
 
-See also https://github.com/autifyhq/autify-cli#autify-web-test-run-scenario-or-test-plan-url
+See our official documentation to get started: https://help.autify.com/docs/github-actions-integration
 
 ## Usage
 
