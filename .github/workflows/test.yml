@@ -32,6 +32,7 @@ jobs:
     env:
       AUTIFY_CLI_INTEGRATION_TEST_INSTALL: 1
       AUTIFY_TEST_WAIT_INTERVAL_SECOND: 0
+      AUTIFY_CONNECT_CLIENT_MODE: fake
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -42,10 +43,10 @@ jobs:
           autify-path: autify-with-proxy
           # TODO: Remove once autify-cli v0.11.0 is released.
           autify-cli-installer-url: "https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/beta/install-cicd.bash"
-          autify-test-url: https://app.autify.com/projects/743/scenarios/91437
-      - run: test ${{ steps.web-test-run.outputs.exit-code }} = 0
+          autify-test-url: https://app.autify.com/projects/0000/scenarios/0000
+      - run: test "${{ steps.web-test-run.outputs.exit-code }}" = 0
       - run: echo "${{ steps.web-test-run.outputs.log }}" | grep "Successfully started"
-      - run: echo ${{ steps.web-test-run.outputs.result-url }} | grep https://app.autify.com/projects/743/results/
+      - run: echo "${{ steps.web-test-run.outputs.result-url }}" | grep -E 'https://app.autify.com/projects/[[:digit:]]+/'
 
       - id: web-test-run-wait
         uses: ./
@@ -54,11 +55,26 @@ jobs:
           autify-path: autify-with-proxy
           # TODO: Remove once autify-cli v0.11.0 is released.
           autify-cli-installer-url: "https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/beta/install-cicd.bash"
-          autify-test-url: https://app.autify.com/projects/743/scenarios/91437
+          autify-test-url: https://app.autify.com/projects/0000/scenarios/0000
           wait: true
-      - run: test ${{ steps.web-test-run-wait.outputs.exit-code }} = 0
+      - run: test "${{ steps.web-test-run-wait.outputs.exit-code }}" = 0
       - run: echo "${{ steps.web-test-run-wait.outputs.log }}" | grep "Test passed!"
-      - run: echo ${{ steps.web-test-run.outputs.result-url }} | grep https://app.autify.com/projects/743/results/
+      - run: echo "${{ steps.web-test-run-wait.outputs.result-url }}" | grep -E 'https://app.autify.com/projects/[[:digit:]]+/'
+
+      - id: web-test-run-wait-autify-connect-client
+        uses: ./
+        with:
+          access-token: token
+          autify-path: autify-with-proxy
+          # TODO: Remove once autify-cli v0.11.0 is released.
+          autify-cli-installer-url: "https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/beta/install-cicd.bash"
+          autify-test-url: https://app.autify.com/projects/0000/scenarios/0000
+          wait: true
+          autify-connect-client: true
+      - run: test "${{ steps.web-test-run-wait-autify-connect-client.outputs.exit-code }}" = 0
+      - run: echo "${{ steps.web-test-run-wait-autify-connect-client.outputs.log }}" | grep "Autify Connect Client is ready!"
+      - run: echo "${{ steps.web-test-run-wait-autify-connect-client.outputs.log }}" | grep "Test passed!"
+      - run: echo "${{ steps.web-test-run-wait-autify-connect-client.outputs.result-url }}" | grep -E 'https://app.autify.com/projects/[[:digit:]]+/'
 
       - id: failed
         uses: ./
@@ -67,8 +83,8 @@ jobs:
           autify-path: 'false'
           # TODO: Remove once autify-cli v0.11.0 is released.
           autify-cli-installer-url: "https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/beta/install-cicd.bash"
-          autify-test-url: https://app.autify.com/projects/743/scenarios/91437
+          autify-test-url: https://app.autify.com/projects/0000/scenarios/0000
         continue-on-error: true
-      - run: test ${{ steps.failed.outputs.exit-code }} = 1
+      - run: test "${{ steps.failed.outputs.exit-code }}" = 1
       - run: test -z "${{ steps.failed.outputs.log }}"
       - run: test -z "${{ steps.failed.outputs.result-url }}"

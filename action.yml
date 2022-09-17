@@ -72,6 +72,9 @@ runs:
     - uses: autifyhq/actions-setup-cli@v2
       with:
         shell-installer-url: ${{ inputs.autify-cli-installer-url }}
+    - if: ${{ inputs.autify-connect-client == 'true' }}
+      run: autify connect client install
+      shell: bash
     - id: run
       run: $GITHUB_ACTION_PATH/script.bash
       shell: bash
