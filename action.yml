@@ -18,6 +18,9 @@ inputs:
   url-replacements:
     required: false
     description: 'URL replacements e.g. http://example.com=http://example.net,http://example.org=http://example.net'
+  max-retry-count:
+    required: false
+    description: 'Maximum retry count while waiting. The command can take up to `timeout * (max-retry-count + 1)`. Only effective with `wait`'
   test-execution-name:
     required: false
     description: 'Name of the test execution (not supported by test plan executions)'
@@ -39,14 +42,18 @@ inputs:
   autify-connect:
     required: false
     description: 'Name of the Autify Connect Access Point (not supported by test plan executions)'
+  autify-connect-client:
+    required: false
+    description: 'When true, start Autify Connect Client. (not supported by test plan executions)'
+    default: 'false'
   autify-path:
     required: false
     default: 'autify'
     description: 'A path to `autify` which will be used to invoke Autify CLI internally. Default is searching from PATH.'
   autify-cli-installer-url:
     required: false
-    description: 'Autify CLI installer URL'
     default: "https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/stable/install-cicd.bash"
+    description: 'Autify CLI installer URL'
 
 outputs:
   exit-code:
@@ -74,6 +81,7 @@ runs:
         INPUT_WAIT: ${{ inputs.wait }}
         INPUT_TIMEOUT: ${{ inputs.timeout }}
         INPUT_URL_REPLACEMENTS: ${{ inputs.url-replacements }}
+        INPUT_MAX_RETRY_COUNT: ${{ inputs.max-retry-count }}
         INPUT_TEST_EXECUTION_NAME: ${{ inputs.test-execution-name }}
         INPUT_BROWSER: ${{ inputs.browser }}
         INPUT_DEVICE: ${{ inputs.device }}
@@ -81,4 +89,5 @@ runs:
         INPUT_OS: ${{ inputs.os }}
         INPUT_OS_VERSION: ${{ inputs.os-version }}
         INPUT_AUTIFY_CONNECT: ${{ inputs.autify-connect }}
+        INPUT_AUTIFY_CONNECT_CLIENT: ${{ inputs.autify-connect-client }}
         INPUT_AUTIFY_PATH: ${{ inputs.autify-path }}

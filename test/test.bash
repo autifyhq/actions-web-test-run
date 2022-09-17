@@ -9,6 +9,7 @@ function before() {
   unset INPUT_WAIT
   unset INPUT_TIMEOUT
   unset INPUT_URL_REPLACEMENTS
+  unset INPUT_MAX_RETRY_COUNT
   unset INPUT_TEST_EXECUTION_NAME
   unset INPUT_BROWSER
   unset INPUT_DEVICE
@@ -16,6 +17,7 @@ function before() {
   unset INPUT_OS
   unset INPUT_OS_VERSION
   unset INPUT_AUTIFY_CONNECT
+  unset INPUT_AUTIFY_CONNECT_CLIENT
   echo "=== TEST ==="
 }
 
@@ -107,18 +109,20 @@ function test_output() {
   export INPUT_WAIT=true
   export INPUT_TIMEOUT=300
   export INPUT_URL_REPLACEMENTS=b1,b2
-  export INPUT_TEST_EXECUTION_NAME=c
-  export INPUT_BROWSER=d
-  export INPUT_DEVICE=e
-  export INPUT_DEVICE_TYPE=f
-  export INPUT_OS=g
-  export INPUT_OS_VERSION=h
-  export INPUT_AUTIFY_CONNECT=i
-  test_command "autify web test run a --wait -t=300 -r=b1 -r=b2 --name=c --browser=d --device=e --device-type=f --os=g --os-version=h --autify-connect=i"
+  export INPUT_MAX_RETRY_COUNT=c
+  export INPUT_TEST_EXECUTION_NAME=d
+  export INPUT_BROWSER=e
+  export INPUT_DEVICE=f
+  export INPUT_DEVICE_TYPE=g
+  export INPUT_OS=h
+  export INPUT_OS_VERSION=i
+  export INPUT_AUTIFY_CONNECT=j
+  export INPUT_AUTIFY_CONNECT_CLIENT=true
+  test_command "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client"
   test_code 0
   test_log
   test_output exit-code "0"
-  test_output log "autify web test run a --wait -t=300 -r=b1 -r=b2 --name=c --browser=d --device=e --device-type=f --os=g --os-version=h --autify-connect=i\n$(cat "$log_file")"
+  test_output log "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
 

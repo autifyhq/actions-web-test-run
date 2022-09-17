@@ -7,23 +7,23 @@ function add_args() {
 }
 
 function exit_script() {
-  local code=$1
+  local code=$?
   echo ::set-output name=exit-code::"$code"
-  exit "$code"
 }
+trap exit_script EXIT
 
 AUTIFY=${INPUT_AUTIFY_PATH}
 
 if [ -z "${INPUT_ACCESS_TOKEN}" ]; then
   echo "Missing access-token."
-  exit_script 1
+  exit 1
 fi
 
 if [ -n "${INPUT_AUTIFY_TEST_URL}" ]; then
   add_args "${INPUT_AUTIFY_TEST_URL}"
 else
   echo "Missing autify-test-url."
-  exit_script 1
+  exit 1
 fi
 
 if [ "${INPUT_WAIT}" = "true" ]; then 
@@ -39,6 +39,10 @@ if [ -n "${INPUT_URL_REPLACEMENTS}" ]; then
   for url_replacement in "${URL_REPLACEMENTS[@]}"; do
     add_args "-r=${url_replacement}"
   done
+fi
+
+if [ -n "${INPUT_MAX_RETRY_COUNT}" ]; then
+  add_args "--max-retry-count=${INPUT_MAX_RETRY_COUNT}"
 fi
 
 if [ -n "${INPUT_TEST_EXECUTION_NAME}" ]; then
@@ -69,6 +73,10 @@ if [ -n "${INPUT_AUTIFY_CONNECT}" ]; then
   add_args "--autify-connect=${INPUT_AUTIFY_CONNECT}"
 fi
 
+if [ "${INPUT_AUTIFY_CONNECT_CLIENT}" = "true" ]; then
+  add_args "--autify-connect-client"
+fi
+
 OUTPUT=$(mktemp)
 AUTIFY_WEB_ACCESS_TOKEN=${INPUT_ACCESS_TOKEN} ${AUTIFY} web test run "${ARGS[@]}" 2>&1 | tee "$OUTPUT"
 exit_code=${PIPESTATUS[0]}
@@ -84,4 +92,4 @@ echo ::set-output name=log::"$output"
 result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | head -1)
 echo ::set-output name=result-url::"$result"
 
-exit_script "$exit_code"
+exit "$exit_code"
