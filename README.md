@@ -13,7 +13,7 @@ See our official documentation to get started: https://help.autify.com/docs/gith
 ### Run a test scenario or test plan
 
 ```yaml
-- uses: autifyhq/actions-web-test-run@v1
+- uses: autifyhq/actions-web-test-run@v2
   with:
     access-token: ${{ secrets.AUTIFY_WEB_ACCESS_TOKEN }}
     autify-test-url: https://app.autify.com/projects/<ID>/(scenarios|test_plans)/<ID>
@@ -24,7 +24,7 @@ This will succeed immediately once the test is started but won't wait the finish
 ### Run and wait a test scenario or test plan
 
 ```yaml
-- uses: autifyhq/actions-web-test-run@v1
+- uses: autifyhq/actions-web-test-run@v2
   with:
     access-token: ${{ secrets.AUTIFY_WEB_ACCESS_TOKEN }}
     autify-test-url: https://app.autify.com/projects/<ID>/(scenarios|test_plans)/<ID>
@@ -103,3 +103,9 @@ log:
 result-url:
   description: "Test result URL on Autify for Web"
 ```
+
+## Migrations
+
+### v2 from v1
+
+Most of the case, v2 is compatible with v1 inputs. Please try to migrate to v2 because v1 is no more maintained.
