@@ -25,3 +25,5 @@ jobs:
 
   integration-test:
     uses: ./.github/workflows/integration-test.yml
+    with:
+      shell-installer-url: https://autify-cli-assets.s3.amazonaws.com/autify-cli/channels/stable/install-cicd.bash
