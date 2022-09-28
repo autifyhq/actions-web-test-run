@@ -7,23 +7,23 @@ function add_args() {
 }
 
 function exit_script() {
-  local code=$?
+  local code=$1
   echo ::set-output name=exit-code::"$code"
+  exit "$code"
 }
-trap exit_script EXIT
 
 AUTIFY=${INPUT_AUTIFY_PATH}
 
 if [ -z "${INPUT_ACCESS_TOKEN}" ]; then
   echo "Missing access-token."
-  exit 1
+  exit_script 1
 fi
 
 if [ -n "${INPUT_AUTIFY_TEST_URL}" ]; then
   add_args "${INPUT_AUTIFY_TEST_URL}"
 else
   echo "Missing autify-test-url."
-  exit 1
+  exit_script 1
 fi
 
 if [ "${INPUT_WAIT}" = "true" ]; then 
@@ -92,4 +92,4 @@ echo ::set-output name=log::"$output"
 result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | head -1)
 echo ::set-output name=result-url::"$result"
 
-exit "$exit_code"
+exit_script "$exit_code"
