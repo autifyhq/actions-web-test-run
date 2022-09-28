@@ -41,10 +41,10 @@ inputs:
     description: 'OS version for running the test scenario (not supported by test plan executions)'
   autify-connect:
     required: false
-    description: 'Name of the Autify Connect Access Point (not supported by test plan executions)'
+    description: 'Name of the Autify Connect Access Point'
   autify-connect-client:
     required: false
-    description: 'When true, start Autify Connect Client. (not supported by test plan executions)'
+    description: 'When true, start Autify Connect Client'
     default: 'false'
   autify-path:
     required: false
