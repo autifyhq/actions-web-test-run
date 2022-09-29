@@ -77,6 +77,8 @@ if [ "${INPUT_AUTIFY_CONNECT_CLIENT}" = "true" ]; then
   add_args "--autify-connect-client"
 fi
 
+export AUTIFY_CLI_USER_AGENT_SUFFIX="${AUTIFY_CLI_USER_AGENT_SUFFIX:=github-actions-web-test-run}"
+
 OUTPUT=$(mktemp)
 AUTIFY_WEB_ACCESS_TOKEN=${INPUT_ACCESS_TOKEN} ${AUTIFY} web test run "${ARGS[@]}" 2>&1 | tee "$OUTPUT"
 exit_code=${PIPESTATUS[0]}
