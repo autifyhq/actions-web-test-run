@@ -83,6 +83,9 @@ autify-connect-client:
   required: false
   description: "When true, start Autify Connect Client"
   default: "false"
+autify-connect-client-extra-arguments:
+  required: false
+  description: 'Extra command line arguments you want to pass to Autify Connect Client e.g. "--experimental-tunnel-proxy http://proxy".'
 autify-path:
   required: false
   default: "autify"

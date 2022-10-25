@@ -20,6 +20,7 @@ function before() {
   unset INPUT_OS_VERSION
   unset INPUT_AUTIFY_CONNECT
   unset INPUT_AUTIFY_CONNECT_CLIENT
+  unset INPUT_AUTIFY_CONNECT_CLIENT_EXTRA_ARGUMENTS
   echo "=== TEST ==="
 }
 
@@ -122,11 +123,12 @@ function test_output() {
   export INPUT_OS_VERSION=i
   export INPUT_AUTIFY_CONNECT=j
   export INPUT_AUTIFY_CONNECT_CLIENT=true
-  test_command "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client"
+  export INPUT_AUTIFY_CONNECT_CLIENT_EXTRA_ARGUMENTS=k
+  test_command "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k"
   test_code 0
   test_log
   test_output exit-code "0"
-  test_output log "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client\n$(cat "$log_file")"
+  test_output log "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
 
