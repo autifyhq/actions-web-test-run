@@ -8,7 +8,7 @@ function add_args() {
 
 function exit_script() {
   local code=$1
-  echo ::set-output name=exit-code::"$code"
+  echo exit-code="$code" >> "$GITHUB_OUTPUT"
   exit "$code"
 }
 
@@ -89,9 +89,9 @@ output=$(cat "$OUTPUT")
 output="${output//'%'/%25}"
 output="${output//$'\n'/%0A}"
 output="${output//$'\r'/%0D}"
-echo ::set-output name=log::"$output"
+echo log="$output" >> "$GITHUB_OUTPUT"
 
 result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | head -1)
-echo ::set-output name=result-url::"$result"
+echo result-url="$result" >> "$GITHUB_OUTPUT"
 
 exit_script "$exit_code"
