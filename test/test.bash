@@ -77,9 +77,29 @@ function test_output() {
   ./script.bash > /dev/null
   local output
   output=$(grep -e "^${name}=" "$GITHUB_OUTPUT" | cut -f2- -d=)
-  output="${output//'%25'/%}"
-  output="${output//'%0A'/$'\n'}"
-  output="${output//'%0D'/$'\r'}"
+  local result
+  result=$(mktemp)
+  echo -e "$output" > "$result"
+
+  if (git diff --no-index --quiet -- "$expected" "$result"); then
+    echo "Passed output: $name"
+  else
+    echo "Failed output: $name"
+    git --no-pager diff --no-index -- "$expected" "$result"
+    exit 1
+  fi
+}
+
+function test_multiline_output() {
+  echo > "$GITHUB_OUTPUT"
+  local name=$1
+  local expected
+  expected=$(mktemp)
+  echo -e "$2" > "$expected"
+  ./script.bash > /dev/null
+  local output
+  delimiter=$(grep -e "^${name}<<" "$GITHUB_OUTPUT" | sed -e 's/<</=/g' | cut -f2- -d=)
+  output=$(sed -e "s/^${name}<<//g" "$GITHUB_OUTPUT" | sed -ne "/${delimiter}/,/${delimiter}/p" | sed -e "/${delimiter}/d")
   local result
   result=$(mktemp)
   echo -e "$output" > "$result"
@@ -102,7 +122,7 @@ function test_output() {
   test_code 0
   test_log
   test_output exit-code "0"
-  test_output log "autify web test run a\n$(cat "$log_file")"
+  test_multiline_output log "autify web test run a\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
 
@@ -128,7 +148,7 @@ function test_output() {
   test_code 0
   test_log
   test_output exit-code "0"
-  test_output log "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k\n$(cat "$log_file")"
+  test_multiline_output log "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
 
@@ -141,6 +161,6 @@ function test_output() {
   test_code 1
   test_log
   test_output exit-code "1"
-  test_output log "autify-fail web test run a\n$(cat "$log_file")"
+  test_multiline_output log "autify-fail web test run a\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
