@@ -91,9 +91,11 @@ exit_code=${PIPESTATUS[0]}
 # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
 output=$(cat "$OUTPUT")
 delimiter="$(openssl rand -hex 8)"
-echo "log<<${delimiter}" >> "${GITHUB_OUTPUT}"
-echo "${output}" >> "${GITHUB_OUTPUT}"
-echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+{
+  echo "log<<${delimiter}"
+  echo "${output}"
+  echo "${delimiter}"
+} >> "${GITHUB_OUTPUT}"
 
 result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | head -1)
 echo result-url="$result" >> "$GITHUB_OUTPUT"
