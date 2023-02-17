@@ -87,13 +87,13 @@ OUTPUT=$(mktemp)
 AUTIFY_WEB_ACCESS_TOKEN=${INPUT_ACCESS_TOKEN} ${AUTIFY} web test run "${ARGS[@]}" 2>&1 | tee "$OUTPUT"
 exit_code=${PIPESTATUS[0]}
 
-# Workaround to return multiline string as outputs
-# https://trstringer.com/github-actions-multiline-strings/
+# Output multiline strings
+# https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
 output=$(cat "$OUTPUT")
-output="${output//'%'/%25}"
-output="${output//$'\n'/%0A}"
-output="${output//$'\r'/%0D}"
-echo log="$output" >> "$GITHUB_OUTPUT"
+delimiter="$(openssl rand -hex 8)"
+echo "log<<${delimiter}" >> "${GITHUB_OUTPUT}"
+echo "${output}" >> "${GITHUB_OUTPUT}"
+echo "${delimiter}" >> "${GITHUB_OUTPUT}"
 
 result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | head -1)
 echo result-url="$result" >> "$GITHUB_OUTPUT"
