@@ -133,7 +133,7 @@ function test_multiline_output() {
   export INPUT_AUTIFY_TEST_URL=a
   export INPUT_WAIT=true
   export INPUT_TIMEOUT=300
-  export INPUT_URL_REPLACEMENTS=b1,b2
+  export INPUT_URL_REPLACEMENTS="https://example.com https://example.net,https://example.net https://example.com?foo=bar"
   export INPUT_MAX_RETRY_COUNT=c
   export INPUT_TEST_EXECUTION_NAME=d
   export INPUT_BROWSER=e
@@ -144,11 +144,11 @@ function test_multiline_output() {
   export INPUT_AUTIFY_CONNECT=j
   export INPUT_AUTIFY_CONNECT_CLIENT=true
   export INPUT_AUTIFY_CONNECT_CLIENT_EXTRA_ARGUMENTS=k
-  test_command "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k"
+  test_command "autify web test run a --wait -t=300 -r=\"https://example.com https://example.net\" -r=\"https://example.net https://example.com?foo=bar\" --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k"
   test_code 0
   test_log
   test_output exit-code "0"
-  test_multiline_output log "autify web test run a --wait -t=300 -r=b1 -r=b2 --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k\n$(cat "$log_file")"
+  test_multiline_output log "autify web test run a --wait -t=300 -r=\"https://example.com https://example.net\" -r=\"https://example.net https://example.com?foo=bar\" --max-retry-count=c --name=d --browser=e --device=f --device-type=g --os=h --os-version=i --autify-connect=j --autify-connect-client --autify-connect-client-extra-arguments=k\n$(cat "$log_file")"
   test_output result-url "https://result"
 }
 

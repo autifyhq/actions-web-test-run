@@ -37,7 +37,7 @@ fi
 if [ -n "${INPUT_URL_REPLACEMENTS}" ]; then
   IFS=',' read -ra URL_REPLACEMENTS <<< "${INPUT_URL_REPLACEMENTS}"
   for url_replacement in "${URL_REPLACEMENTS[@]}"; do
-    add_args "-r=${url_replacement}"
+    add_args "-r=\"${url_replacement}\""
   done
 fi
 
