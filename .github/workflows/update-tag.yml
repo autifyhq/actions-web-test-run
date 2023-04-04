@@ -1,0 +1,23 @@
+name: Update tag
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  update-tag:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get major version num and update tag
+        run: |
+          MAJOR=${GITHUB_REF_NAME%%.*}
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -fa ${MAJOR} -m "Update major version tag"
+          git push origin ${MAJOR} --force
