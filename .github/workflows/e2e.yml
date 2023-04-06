@@ -1,0 +1,28 @@
+on: pull_request
+
+jobs:
+  v2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: autify
+        uses: autifyhq/actions-web-test-run@v2
+        with:
+          access-token: ${{ secrets.MTSMFM_AUTIFY_WEB_ACCESS_TOKEN_TEMP }}
+          autify-test-url: https://app.autify.com/projects/1528/scenarios/145142
+          wait: true
+          timeout: 300
+          url-replacements: https://example.com https://example.net,https://example.net https://example.com
+
+  patched:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: autify
+        uses: autifyhq/actions-web-test-run@revert-31-mtsmfm/surround-by-quote
+        with:
+          access-token: ${{ secrets.MTSMFM_AUTIFY_WEB_ACCESS_TOKEN_TEMP }}
+          autify-test-url: https://app.autify.com/projects/1528/scenarios/145142
+          wait: true
+          timeout: 300
+          url-replacements: https://example.com https://example.net,https://example.net https://example.com
