@@ -19,7 +19,7 @@ jobs:
       AUTIFY_TEST_WAIT_INTERVAL_SECOND: 0
       AUTIFY_CONNECT_CLIENT_MODE: fake
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
 
       - id: web-test-run
