@@ -81,6 +81,7 @@ if [ -n "${INPUT_AUTIFY_CONNECT_CLIENT_EXTRA_ARGUMENTS}" ]; then
   add_args "--autify-connect-client-extra-arguments=${INPUT_AUTIFY_CONNECT_CLIENT_EXTRA_ARGUMENTS}"
 fi
 
+export AUTIFY_TEST_WAIT_INTERVAL_SECOND="${INPUT_INTERVAL:=1}"
 export AUTIFY_CLI_USER_AGENT_SUFFIX="${AUTIFY_CLI_USER_AGENT_SUFFIX:=github-actions-web-test-run}"
 
 OUTPUT=$(mktemp)
