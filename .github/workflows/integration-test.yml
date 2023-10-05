@@ -41,6 +41,7 @@ jobs:
           autify-cli-installer-url: ${{ inputs.shell-installer-url }}
           autify-test-url: https://app.autify.com/projects/0000/scenarios/0000
           wait: true
+          interval: 3
       - run: test "${{ steps.web-test-run-wait.outputs.exit-code }}" = 0
       - run: echo "${{ steps.web-test-run-wait.outputs.log }}" | grep "Test passed!"
       - run: echo "${{ steps.web-test-run-wait.outputs.result-url }}" | grep -E 'https://app.autify.com/projects/[[:digit:]]+/'
