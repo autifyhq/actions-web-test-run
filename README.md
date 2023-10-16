@@ -54,7 +54,7 @@ timeout:
   description: "Timeout seconds when waiting."
 interval:
   required: false
-  description: "Timeout seconds to poll the test result when waiting."
+  description: "Interval seconds to poll the test result when waiting."
 url-replacements:
   required: false
   description: "URL replacements e.g. http://example.com=http://example.net,http://example.org=http://example.net"
