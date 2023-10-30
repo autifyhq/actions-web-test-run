@@ -20,7 +20,7 @@ jobs:
       AUTIFY_CONNECT_CLIENT_MODE: fake
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
 
       - id: web-test-run
         uses: ./
