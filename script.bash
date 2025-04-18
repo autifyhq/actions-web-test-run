@@ -26,7 +26,7 @@ else
   exit_script 1
 fi
 
-if [ "${INPUT_WAIT}" = "true" ]; then 
+if [ "${INPUT_WAIT}" = "true" ]; then
   add_args "--wait"
 fi
 
@@ -98,7 +98,7 @@ delimiter="$(openssl rand -hex 8)"
   echo "${delimiter}"
 } >> "${GITHUB_OUTPUT}"
 
-result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | head -1)
+result=$(grep "Successfully started" "$OUTPUT" | grep -Eo 'https://[^ ]+' | tail -1)
 echo result-url="$result" >> "$GITHUB_OUTPUT"
 
 exit_script "$exit_code"
