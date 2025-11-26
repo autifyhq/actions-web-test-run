@@ -75,7 +75,7 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - uses: autifyhq/actions-setup-cli@v2
+    - uses: autifyhq/actions-setup-cli@62decfdbb7902d221d4865ae6170d5dbcd3c90db # v2.1.2
       with:
         shell-installer-url: ${{ inputs.autify-cli-installer-url }}
     - if: ${{ inputs.autify-connect-client == 'true' }}
